@@ -10,7 +10,7 @@ foreach($Tenant in $Tenants) #for each Tenant in the list of Tenants
     $Lusers = foreach($User in $Users){ if($User.isLicensed -eq "True"){Get-MsolUser -TenantId $Tenant.TenantId -UserPrincipalName $User.UserPrincipalName}}#Get list of Licensed Users
     $NoAdd = Get-MsolGroupMember -GroupObjectId $ADSync.ObjectId -TenantId $Tenant.TenantId #List of Users already in the Azure AD Sync
     $NewUsers = $Lusers.UserPrincipalName | Where {$NoAdd.EmailAddress -notcontains $_}#List of Licensed Users not already in Azure AD Sync
-    if($NewUsers -eq $null){Continue}
+    if($null -eq $NewUsers){Continue}
     Write-Host "----------------------------------------"
     Write-Host -BackgroundColor Yellow -ForegroundColor Black $Tenant.DefaultDomainName
     Write-Host "----------------------------------------"
